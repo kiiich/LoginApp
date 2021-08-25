@@ -17,6 +17,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        userNameTF.delegate = self
+        passwordTF.delegate = self
     }
 
     @IBAction func logInTapped() {
@@ -37,6 +39,11 @@ class LoginViewController: UIViewController {
         showAlert(title: "Ooops!", message: "Your password is \(password) 😈")
     }
     
+    @IBAction func unwind(for segue: UIStoryboardSegue) {
+        passwordTF.text = ""
+        userNameTF.text = ""
+    }
+
     private func showAlert(title: String, message: String, clearPassword: Bool = false) {
         
         let alert = UIAlertController(
@@ -58,11 +65,27 @@ class LoginViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let welcomeVC = segue.description as? WelcomeViewController else { return }
-        
+        guard let welcomeVC = segue.destination as? WelcomeViewController else { return }
         welcomeVC.userName = userName
-        
     }
-
+    
 }
 
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if userNameTF.text == "" {
+            return false
+        }
+        
+        if textField == userNameTF {
+            passwordTF.becomeFirstResponder()
+        } else if textField == passwordTF {
+            logInTapped()
+        }
+        
+        return true
+    }
+    
+}
