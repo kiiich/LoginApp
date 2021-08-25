@@ -11,6 +11,7 @@ class LoginViewController: UIViewController {
 
     @IBOutlet weak var userNameTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
+    @IBOutlet weak var logInButton: UIButton!
     
     private let userName = "Nick"
     private let password = "123"
@@ -82,7 +83,7 @@ extension LoginViewController: UITextFieldDelegate {
         if textField == userNameTF {
             passwordTF.becomeFirstResponder()
         } else if textField == passwordTF {
-            logInTapped()
+            logInButton.sendActions(for: .touchUpInside)
         }
         
         return true
